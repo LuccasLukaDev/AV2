@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap');
+
+.faixa {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-around;
+
+  margin: 10px 16px;
+  padding: 8px;
+
+  background: linear-gradient(160deg, #2a2a3e 0%, #1e1e30 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.item-faixa {
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+
+  width: 200px;
+  height: 54px;
+  margin: 6px;
+  padding: 5px 16px;
+
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.45);
+
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+
+  transition: all 0.2s ease;
+}
+
+.item-faixa:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(99, 179, 237, 0.4);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+}
+
+.ativo {
+  background: rgba(99, 179, 237, 0.12);
+  border-color: rgba(99, 179, 237, 0.5);
+  color: rgba(99, 179, 237, 1);
+}
+
+@media (max-width: 768px) {
+  .faixa {
+    margin: 8px;
+    padding: 6px;
+  }
+
+  .item-faixa {
+    font-size: 17px;
+    height: 46px;
+    letter-spacing: 1px;
+  }
+}
