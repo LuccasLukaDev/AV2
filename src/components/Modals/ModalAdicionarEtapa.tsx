@@ -82,6 +82,7 @@ function ModalAdicionarEtapa({ onFechar, onSalvar, idsAeronaves }: Props) {
             value={prazo}
             onChange={e => { setPrazo(e.target.value); setErro('') }}
             className={erro && !prazo ? 'input-erro' : ''}
+            maxLength={15}
           />
         </div>
 

@@ -193,11 +193,12 @@ function Etapas({
           <div className='modal-overlay' onClick={() => setModalFuncAberto(false)}>
             <div className='modal-box' onClick={e => e.stopPropagation()}>
               <h2 className='modal-titulo'>Adicionar Funcionário</h2>
-
-              <input
-                value={inputIdFunc}
-                onChange={e => setInputIdFunc(e.target.value)}
-              />
+              <div className='modal-campo input'>
+                <input
+                  value={inputIdFunc}
+                  onChange={e => setInputIdFunc(e.target.value)}
+                />
+              </div>
 
               {erroFunc && <p className='modal-erro'>{erroFunc}</p>}
 

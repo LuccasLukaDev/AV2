@@ -2,7 +2,10 @@ import './Modal.css'
 import { useState } from 'react'
 
 interface Peca {
-  nome: string; fornecedor: string; tipo: string; status: string;
+  nome: string
+  fornecedor: string
+  tipo: string
+  status: string
 }
 
 interface Props {
@@ -29,42 +32,46 @@ function ModalAdicionarPeca({ onFechar, onSalvar }: Props) {
       tipo,
       status,
     })
+
+    onFechar()
   }
 
   return (
     <div className='modal-overlay' onClick={onFechar}>
       <div className='modal-box' onClick={e => e.stopPropagation()}>
         <button className='modal-btn-fechar' onClick={onFechar}>✕</button>
+
         <h2 className='modal-titulo'>Adicionar Peça</h2>
 
         <div className='modal-campo'>
           <label>Nome</label>
-          <input
-            type='text'
-            placeholder='Ex: PEÇA 1'
-            value={nome}
-            onChange={e => { setNome(e.target.value); setErro('') }}
-            maxLength={20}
-            className={erro && !nome ? 'input-erro' : ''}
-          />
+          <input 
+            value={nome} 
+            onChange={e => {
+              setNome(e.target.value)
+              setErro('')
+            }} 
+            className={erro && (!nome) ? 'input-erro' : ''}
+            maxLength={20} />
+          
         </div>
 
         <div className='modal-campo'>
           <label>Fornecedor</label>
-          <input
-            type='text'
-            placeholder='Ex: FORNECEDOR 1'
-            value={fornecedor}
-            onChange={e => { setFornecedor(e.target.value); setErro('') }}
-            maxLength={20}
-            className={erro && !fornecedor ? 'input-erro' : ''}
-          />
+          <input 
+            value={fornecedor} 
+            onChange={e => {
+              setFornecedor(e.target.value)
+              setErro('')
+            }} 
+            className={erro && (!fornecedor) ? 'input-erro' : ''} 
+            maxLength={20} />
         </div>
 
         <div className='modal-campo'>
           <label>Tipo</label>
           <div className={`modal-select-wrapper ${erro && !tipo ? 'input-erro' : ''}`}>
-            <select value={tipo} onChange={e => { setTipo(e.target.value); setErro('') }}>
+            <select value={tipo} onChange={e => setTipo(e.target.value)}>
               <option value='' disabled></option>
               <option value='NACIONAL'>NACIONAL</option>
               <option value='IMPORTADA'>IMPORTADA</option>
@@ -75,7 +82,7 @@ function ModalAdicionarPeca({ onFechar, onSalvar }: Props) {
         <div className='modal-campo'>
           <label>Status</label>
           <div className={`modal-select-wrapper ${erro && !status ? 'input-erro' : ''}`}>
-            <select value={status} onChange={e => { setStatus(e.target.value); setErro('') }}>
+            <select value={status} onChange={e => setStatus(e.target.value)}>
               <option value='' disabled></option>
               <option value='EM_PRODUCAO'>EM_PRODUCAO</option>
               <option value='EM_TRANSPORTE'>EM_TRANSPORTE</option>
