@@ -1,8 +1,13 @@
 import './Modal.css'
 import { useState } from 'react'
 
+interface Funcionario {
+  id: number; nomeCompleto: string; username: string; senha: string;
+  telefone: string; tipo: string; endereco: string;
+}
+
 interface Etapa {
-  id: string; nome: string; prazo: string; status: string; idAeronave: string;
+  id: string; nome: string; prazo: string; status: string; idAeronave: string, funcionarios: Funcionario[];
 }
 
 interface Props {
@@ -36,6 +41,7 @@ function ModalAdicionarEtapa({ onFechar, onSalvar, idsAeronaves }: Props) {
       prazo: prazoFormatado,
       status: 'PENDENTE',
       idAeronave: idAeronave.toUpperCase(),
+      funcionarios: []
     })
   }
 

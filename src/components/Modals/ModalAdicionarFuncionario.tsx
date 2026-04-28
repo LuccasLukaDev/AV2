@@ -2,7 +2,7 @@ import './Modal.css'
 import { useState } from 'react'
 
 interface Funcionario {
-  id: number; nomeCompleto: string; username: string; senha: string; telefone: string; tipo: string;
+  id: number; nomeCompleto: string; username: string; senha: string; telefone: string; tipo: string, endereco: string;
 }
 
 interface Props {
@@ -43,6 +43,7 @@ function ModalAdicionarFuncionario({ onFechar, onSalvar, usernamesExistentes, pr
       senha,
       telefone,
       tipo,
+      endereco,
     })
   }
 

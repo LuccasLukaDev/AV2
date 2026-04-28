@@ -132,6 +132,219 @@
   background: rgba(255, 100, 100, 0.08);
 }
 
+.detalhe-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+}
+
+.detalhe-topbar-esquerda,
+.detalhe-topbar-direita {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detalhe-titulo {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #f0f0f0;
+  letter-spacing: 2px;
+}
+
+.detalhe-btn-voltar,
+.detalhe-btn-lixeira,
+.detalhe-btn-func-add {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 20px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.detalhe-btn-voltar:hover {
+  border-color: rgba(99, 179, 237, 0.6);
+  color: rgba(99, 179, 237, 0.9);
+}
+
+.detalhe-btn-func-add:hover {
+  border-color: rgba(99, 179, 237, 0.6);
+  color: rgba(99, 179, 237, 0.9);
+  background: rgba(99, 179, 237, 0.08);
+}
+
+.detalhe-btn-lixeira:hover {
+  border-color: rgba(255, 100, 100, 0.6);
+  color: rgba(255, 100, 100, 0.9);
+  background: rgba(255, 100, 100, 0.08);
+}
+
+.detalhe-btn-status {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.detalhe-btn-status.pendente:hover { border-color: rgba(246, 201, 14, 0.6); background: rgba(246, 201, 14, 0.08); }
+.detalhe-btn-status.andamento:hover { border-color: rgba(99, 179, 237, 0.6); background: rgba(99, 179, 237, 0.08); }
+.detalhe-btn-status.concluida:hover { border-color: rgba(104, 211, 145, 0.6); background: rgba(104, 211, 145, 0.08); }
+
+.detalhe-confirmar-delete {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(255, 100, 100, 0.9);
+}
+
+.detalhe-btn-confirmar-sim {
+  background: rgba(255, 100, 100, 0.15);
+  border: 1.5px solid rgba(255, 100, 100, 0.5);
+  border-radius: 50px;
+  padding: 6px 20px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: rgba(255, 100, 100, 0.9);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.detalhe-btn-confirmar-sim:hover { background: rgba(255, 100, 100, 0.3); }
+
+.detalhe-btn-confirmar-nao {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+  padding: 6px 20px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.detalhe-btn-confirmar-nao:hover { background: rgba(255, 255, 255, 0.1); }
+
+.detalhe-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.etapa-info-bar {
+  display: flex;
+  gap: 40px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.etapa-func-titulo {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 2px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.etapa-func-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 48px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.etapa-func-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.etapa-func-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 48px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #f0f0f0;
+  align-items: center;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.etapa-func-remover {
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 14px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  margin: 0 auto;
+}
+
+.etapa-func-remover:hover {
+  border-color: rgba(255, 100, 100, 0.6);
+  color: rgba(255, 100, 100, 0.9);
+  background: rgba(255, 100, 100, 0.08);
+}
+
+.etapa-func-vazio {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  margin: 20px 0;
+}
+
 @media (max-width: 768px) {
   .etapas-header { display: none; }
 
@@ -169,4 +382,8 @@
     font-size: 18px;
     flex: 1;
   }
+
+  .detalhe-titulo { font-size: 20px; }
+  .detalhe-card { padding: 16px; }
+  .etapa-info-bar { flex-direction: column; gap: 8px; }
 }
