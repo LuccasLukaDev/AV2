@@ -28,9 +28,6 @@ npm install
 
 # Rodar em desenvolvimento
 npm run dev
-
-# Build para produção
-npm run build
 ```
 
 ---
@@ -57,6 +54,14 @@ npm run build
 
 ---
 
+## 👨‍💻 Usuário Admin
+
+Usuário admin já vem cadastrado para primeiro acesso:
+
+- **Login:** `dean`
+- **Senha:** `123`
+
+---
 ## 📦 Entidades
 
 ### ✈️ Aeronave
@@ -106,4 +111,4 @@ npm run build
 
 ## 📄 Licença
 
-Este projeto foi desenvolvido como parte de uma atividade acadêmica — AV1 · 2026.
+Este projeto foi desenvolvido como parte de uma atividade acadêmica — AV2 · 2026.
