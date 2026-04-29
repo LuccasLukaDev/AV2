@@ -39,7 +39,7 @@ function ModalAdicionarFuncionario({ onFechar, onSalvar, usernamesExistentes, pr
     onSalvar({
       id: proximoId,
       nomeCompleto: nomeCompleto.toUpperCase(),
-      username,
+      username: username.toLowerCase(),
       senha,
       telefone,
       tipo,

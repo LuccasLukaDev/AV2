@@ -72,7 +72,7 @@ function Funcionarios({ funcionarios, onSalvar, onDeletar, onEditar, onLogout }:
     onEditar({
       ...selecionado,
       nomeCompleto: editNome,
-      username: editUsername,
+      username: editUsername.toLowerCase(),
       tipo: editTipo,
       senha: editSenha,
       telefone: editTelefone,
