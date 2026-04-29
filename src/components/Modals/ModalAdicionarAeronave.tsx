@@ -1,9 +1,40 @@
 import './Modal.css'
 import { useState } from 'react'
 
-interface Aeronave {
-  id: string; modelo: string; tipo: string; capacidade: string; alcance: string;
-  etapas: any[]; pecas: any[]; testes: any[];
+// 🔥 TIPOS PADRONIZADOS
+type Etapa = {
+  id: string
+  nome: string
+  prazo: string
+  status: string
+  idAeronave: string
+  funcionarios: any[]
+}
+
+type Peca = {
+  id: string
+  nome: string
+  fornecedor: string
+  tipo: string
+  status: string
+}
+
+type Teste = {
+  id: string
+  idAeronave: string
+  tipo: string
+  resultado: string
+}
+
+type Aeronave = {
+  id: string
+  modelo: string
+  tipo: string
+  capacidade: string
+  alcance: string
+  etapas: Etapa[]
+  pecas: Peca[]
+  testes: Teste[]
 }
 
 interface Props {
@@ -39,12 +70,17 @@ function ModalAdicionarAeronave({ onFechar, onSalvar, proximoId }: Props) {
       pecas: [],
       testes: [],
     })
+
+    // 🔥 fecha modal automaticamente depois de salvar
+    onFechar()
   }
 
   return (
     <div className='modal-overlay' onClick={onFechar}>
       <div className='modal-box' onClick={e => e.stopPropagation()}>
+        
         <button className='modal-btn-fechar' onClick={onFechar}>✕</button>
+
         <h2 className='modal-titulo'>Adicionar Aeronave</h2>
 
         <div className='modal-campo'>
@@ -62,8 +98,11 @@ function ModalAdicionarAeronave({ onFechar, onSalvar, proximoId }: Props) {
         <div className='modal-campo'>
           <label>Tipo</label>
           <div className={`modal-select-wrapper ${erro && !tipo ? 'input-erro' : ''}`}>
-            <select value={tipo} onChange={e => { setTipo(e.target.value); setErro('') }}>
-              <option value='' disabled></option>
+            <select
+              value={tipo}
+              onChange={e => { setTipo(e.target.value); setErro('') }}
+            >
+              <option value='' disabled>Selecione</option>
               <option value='MILITAR'>MILITAR</option>
               <option value='COMERCIAL'>COMERCIAL</option>
             </select>
@@ -77,7 +116,10 @@ function ModalAdicionarAeronave({ onFechar, onSalvar, proximoId }: Props) {
               type='text'
               placeholder='Ex: 1000'
               value={capacidade}
-              onChange={e => { setCapacidade(somenteNumeros(e.target.value)); setErro('') }}
+              onChange={e => {
+                setCapacidade(somenteNumeros(e.target.value))
+                setErro('')
+              }}
               maxLength={7}
             />
             <span className='modal-sufixo'>KG</span>
@@ -91,7 +133,10 @@ function ModalAdicionarAeronave({ onFechar, onSalvar, proximoId }: Props) {
               type='text'
               placeholder='Ex: 1500'
               value={alcance}
-              onChange={e => { setAlcance(somenteNumeros(e.target.value)); setErro('') }}
+              onChange={e => {
+                setAlcance(somenteNumeros(e.target.value))
+                setErro('')
+              }}
               maxLength={7}
             />
             <span className='modal-sufixo'>M</span>
@@ -101,8 +146,11 @@ function ModalAdicionarAeronave({ onFechar, onSalvar, proximoId }: Props) {
         {erro && <p className='modal-erro'>{erro}</p>}
 
         <div className='modal-footer'>
-          <button className='modal-btn-salvar' onClick={handleSalvar}>Salvar 💾</button>
+          <button className='modal-btn-salvar' onClick={handleSalvar}>
+            Salvar 💾
+          </button>
         </div>
+
       </div>
     </div>
   )

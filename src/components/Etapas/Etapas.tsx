@@ -45,17 +45,20 @@ function Etapas({
   const [selecionado, setSelecionado] = useState<Etapa | null>(null)
   const [confirmandoDeletar, setConfirmandoDeletar] = useState(false)
   const [modalFuncAberto, setModalFuncAberto] = useState(false)
+
   const [inputIdFunc, setInputIdFunc] = useState('')
   const [erroFunc, setErroFunc] = useState('')
 
   function abrirDetalhe(e: Etapa) {
     setSelecionado(e)
     setConfirmandoDeletar(false)
+    setErroFunc('')
   }
 
   function fecharDetalhe() {
     setSelecionado(null)
     setConfirmandoDeletar(false)
+    setErroFunc('')
   }
 
   function handleDeletar() {
@@ -64,31 +67,64 @@ function Etapas({
     fecharDetalhe()
   }
 
+  // 🔥 REGRA DE NEGÓCIO (PDF)
+  function handleStatus(novoStatus: string) {
+    if (!selecionado) return
+
+    const etapasDaAeronave = etapas
+      .filter(e => e.idAeronave === selecionado.idAeronave)
+      .sort((a, b) => a.id.localeCompare(b.id))
+
+    const indexAtual = etapasDaAeronave.findIndex(e => e.id === selecionado.id)
+    const anterior = etapasDaAeronave[indexAtual - 1]
+
+    // ❌ não pode voltar pra pendente
+    if (novoStatus === 'PENDENTE') {
+      setErroFunc('Não é permitido voltar para PENDENTE.')
+      return
+    }
+
+    // ❌ não pode iniciar fora de ordem
+    if (novoStatus === 'ANDAMENTO') {
+      if (selecionado.status !== 'PENDENTE') {
+        setErroFunc('Só é possível iniciar se estiver PENDENTE.')
+        return
+      }
+
+      if (anterior && anterior.status !== 'CONCLUIDA') {
+        setErroFunc('Finalize a etapa anterior primeiro.')
+        return
+      }
+    }
+
+    // ❌ não pode concluir errado
+    if (novoStatus === 'CONCLUIDA') {
+      if (selecionado.status !== 'ANDAMENTO') {
+        setErroFunc('A etapa precisa estar EM ANDAMENTO.')
+        return
+      }
+    }
+
+    setErroFunc('')
+    onAtualizarStatus(selecionado.id, novoStatus)
+    setSelecionado(prev => prev ? { ...prev, status: novoStatus } : null)
+  }
+
   function handleAdicionarFuncionario() {
     if (!selecionado) return
 
     const id = parseInt(inputIdFunc)
     const func = funcionarios.find(f => f.id === id)
 
-    if (!func) {
-      setErroFunc('Funcionário não encontrado.')
-      return
-    }
+    if (!func) return setErroFunc('Funcionário não encontrado.')
 
-    const jaExiste = selecionado.funcionarios.some(f => f.id === id)
+    if (selecionado.funcionarios.some(f => f.id === id))
+      return setErroFunc('Funcionário já adicionado.')
 
-    if (jaExiste) {
-      setErroFunc('Funcionário já adicionado.')
-      return
-    }
+    const novos = [...selecionado.funcionarios, func]
 
-    const novosFunc = [...selecionado.funcionarios, func]
-
-    onAtualizarFuncionarios(selecionado.id, novosFunc)
-
-    setSelecionado(prev =>
-      prev ? { ...prev, funcionarios: novosFunc } : null
-    )
+    onAtualizarFuncionarios(selecionado.id, novos)
+    setSelecionado(prev => prev ? { ...prev, funcionarios: novos } : null)
 
     setInputIdFunc('')
     setErroFunc('')
@@ -98,26 +134,13 @@ function Etapas({
   function handleRemoverFuncionario(idFunc: number) {
     if (!selecionado) return
 
-    const novosFunc = selecionado.funcionarios.filter(f => f.id !== idFunc)
+    const novos = selecionado.funcionarios.filter(f => f.id !== idFunc)
 
-    onAtualizarFuncionarios(selecionado.id, novosFunc)
-
-    setSelecionado(prev =>
-      prev ? { ...prev, funcionarios: novosFunc } : null
-    )
+    onAtualizarFuncionarios(selecionado.id, novos)
+    setSelecionado(prev => prev ? { ...prev, funcionarios: novos } : null)
   }
 
-  function handleStatus(status: string) {
-    if (!selecionado) return
-
-    onAtualizarStatus(selecionado.id, status)
-
-    setSelecionado(prev =>
-      prev ? { ...prev, status } : null
-    )
-  }
-
-  // ── DETALHE ──
+  // ================= DETALHE =================
   if (selecionado) {
     return (
       <main>
@@ -126,7 +149,11 @@ function Etapas({
           <div className='detalhe-topbar'>
             <div className='detalhe-topbar-esquerda'>
               <button className='detalhe-btn-voltar' onClick={fecharDetalhe}>↩</button>
-              <button className='detalhe-btn-func-add' onClick={() => setModalFuncAberto(true)}>+</button>
+              <button className='detalhe-btn-func-add' onClick={() => {
+                setModalFuncAberto(true)
+                setInputIdFunc('')
+                setErroFunc('')
+              }}>+</button>
             </div>
 
             <span className='detalhe-titulo'>ID: {selecionado.id}</span>
@@ -149,15 +176,22 @@ function Etapas({
             </div>
           </div>
 
+          {erroFunc && <p className='detalhe-erro'>{erroFunc}</p>}
+
           <div className='detalhe-card'>
             <div className='etapa-info-bar'>
-              <span>STATUS: <strong className={
-                selecionado.status === 'CONCLUIDA' ? 'status-concluida' :
-                selecionado.status === 'ANDAMENTO' ? 'status-andamento' :
-                'status-pendente'
-              }>{selecionado.status}</strong></span>
+              <span>
+                STATUS: <strong className={
+                  selecionado.status === 'CONCLUIDA' ? 'status-concluida' :
+                  selecionado.status === 'ANDAMENTO' ? 'status-andamento' :
+                  'status-pendente'
+                }>
+                  {selecionado.status}
+                </strong>
+              </span>
 
               <span>PRAZO: <strong>{selecionado.prazo}</strong></span>
+              <span>AERONAVE: <strong>{selecionado.idAeronave}</strong></span>
             </div>
 
             <div className='etapa-func-titulo'>FUNCIONÁRIOS</div>
@@ -170,7 +204,7 @@ function Etapas({
 
             <div className='etapa-func-body'>
               {selecionado.funcionarios.length === 0 && (
-                <p className='etapa-func-vazio'>Nenhum funcionário adicionado.</p>
+                <p className='etapa-func-vazio'>Nenhum funcionário.</p>
               )}
 
               {selecionado.funcionarios.map(f => (
@@ -192,8 +226,12 @@ function Etapas({
         {modalFuncAberto && (
           <div className='modal-overlay' onClick={() => setModalFuncAberto(false)}>
             <div className='modal-box' onClick={e => e.stopPropagation()}>
+              <button className='modal-btn-fechar' onClick={() => setModalFuncAberto(false)}>✕</button>
+
               <h2 className='modal-titulo'>Adicionar Funcionário</h2>
-              <div className='modal-campo input'>
+
+              <div className='modal-campo'>
+                <label>ID</label>
                 <input
                   value={inputIdFunc}
                   onChange={e => setInputIdFunc(e.target.value)}
@@ -202,9 +240,11 @@ function Etapas({
 
               {erroFunc && <p className='modal-erro'>{erroFunc}</p>}
 
-              <button className='modal-btn-salvar' onClick={handleAdicionarFuncionario}>
-                Confirmar
-              </button>
+              <div className='modal-footer'>
+                <button className='modal-btn-salvar' onClick={handleAdicionarFuncionario}>
+                  Confirmar
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -212,7 +252,7 @@ function Etapas({
     )
   }
 
-  // ── LISTAGEM ──
+  // ================= LISTA =================
   return (
     <main>
       <div className='corpin-etapas'>
@@ -227,11 +267,7 @@ function Etapas({
 
           <div className='etapas-body'>
             {etapas.map(e => (
-              <div
-                className='etapas-row'
-                key={e.id}
-                onClick={() => abrirDetalhe(e)}
-              >
+              <div key={e.id} className='etapas-row' onClick={() => abrirDetalhe(e)}>
                 <span>{e.id}</span>
                 <span>{e.nome}</span>
                 <span>{e.prazo}</span>
@@ -248,13 +284,9 @@ function Etapas({
         </div>
 
         <div className='etapas-footer'>
-          <button
-            className='etapas-btn-adicionar'
-            onClick={() => setModalAberto(true)}
-          >
+          <button className='etapas-btn-adicionar' onClick={() => setModalAberto(true)}>
             ADICIONAR ETAPA +
           </button>
-
           <button className='etapas-btn-sair'>→]</button>
         </div>
       </div>

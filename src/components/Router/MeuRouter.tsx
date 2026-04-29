@@ -8,30 +8,55 @@ import Pecas from "../Pecas/Pecas";
 import Testes from "../Testes/Testes";
 import Aeronaves from "../Aeronaves/Aeronaves";
 
-interface Aeronave {
-  id: string; modelo: string; tipo: string; capacidade: string; alcance: string;
-  etapas: Etapa[]; pecas: Peca[]; testes: Teste[];
+// ================= TIPOS =================
+type Funcionario = {
+  id: number
+  nomeCompleto: string
+  username: string
+  senha: string
+  telefone: string
+  tipo: string
+  endereco: string
 }
 
-interface Etapa {
-  id: string; nome: string; prazo: string; status: string; idAeronave: string;
-  funcionarios: Funcionario[];
+type Etapa = {
+  id: string
+  nome: string
+  prazo: string
+  status: string
+  idAeronave: string
+  funcionarios: Funcionario[]
 }
 
-interface Peca {
-  id: string; nome: string; fornecedor: string; tipo: string; status: string;
+type Peca = {
+  id: string
+  nome: string
+  fornecedor: string
+  tipo: string
+  status: string
 }
 
-interface Funcionario {
-  id: number; nomeCompleto: string; username: string; senha: string;
-  telefone: string; tipo: string; endereco: string;
+type Teste = {
+  id: string
+  idAeronave: string
+  tipo: string
+  resultado: string
 }
 
-interface Teste {
-  id: string; idAeronave: string; tipo: string; resultado: string;
+type Aeronave = {
+  id: string
+  modelo: string
+  tipo: string
+  capacidade: string
+  alcance: string
+  etapas: Etapa[]
+  pecas: Peca[]
+  testes: Teste[]
 }
 
+// ================= COMPONENT =================
 export default function MeuRouter() {
+
   const [aeronaves, setAeronaves] = useState<Aeronave[]>([
     { id: 'A001', modelo: 'MODELO 1', tipo: 'MILITAR', capacidade: '1000 KG', alcance: '1500 M', etapas: [], pecas: [], testes: [] },
     { id: 'A002', modelo: 'MODELO 2', tipo: 'MILITAR', capacidade: '1500 KG', alcance: '200 M',  etapas: [], pecas: [], testes: [] },
@@ -39,9 +64,9 @@ export default function MeuRouter() {
   ])
 
   const [etapas, setEtapas] = useState<Etapa[]>([
-    { id: 'E001', nome: 'ETAPA 1', prazo: '20 / 11 / 2026', status: 'CONCLUIDA', idAeronave: 'A001', funcionarios: [] },
-    { id: 'E002', nome: 'ETAPA 2', prazo: '20 / 11 / 2026', status: 'ANDAMENTO', idAeronave: 'A001', funcionarios: [] },
-    { id: 'E003', nome: 'ETAPA 3', prazo: '20 / 11 / 2026', status: 'PENDENTE',  idAeronave: 'A002', funcionarios: [] },
+    { id: 'E001', nome: 'ETAPA 1', prazo: '20 / 11 / 2026', status: 'PENDENTE', idAeronave: 'A001', funcionarios: [] },
+    { id: 'E002', nome: 'ETAPA 2', prazo: '20 / 11 / 2026', status: 'PENDENTE', idAeronave: 'A001', funcionarios: [] },
+    { id: 'E003', nome: 'ETAPA 3', prazo: '20 / 11 / 2026', status: 'PENDENTE', idAeronave: 'A002', funcionarios: [] },
   ])
 
   const [pecas, setPecas] = useState<Peca[]>([
@@ -51,9 +76,9 @@ export default function MeuRouter() {
   ])
 
   const [funcionarios, setFuncionarios] = useState<Funcionario[]>([
-    { id: 1, nomeCompleto: 'Dean Winchester', username: 'Dean', senha: 'Impala Sport Sedan 1967', telefone: '12994568473', tipo: 'ADM',        endereco: 'Rua das Flores, 123' },
-    { id: 2, nomeCompleto: 'Sam Winchester',  username: 'Sam',  senha: 'hunter',                  telefone: '12998568473', tipo: 'ENGENHEIRO', endereco: 'Rua das Pedras, 456' },
-    { id: 3, nomeCompleto: 'John Winchester', username: 'John', senha: 'mary',                    telefone: '12994566666', tipo: 'OPERADOR',   endereco: 'Rua dos Ventos, 789' },
+    { id: 1, nomeCompleto: 'Dean Winchester', username: 'Dean', senha: '123', telefone: '12994568473', tipo: 'ADM', endereco: 'Rua A' },
+    { id: 2, nomeCompleto: 'Sam Winchester',  username: 'Sam',  senha: '123', telefone: '12998568473', tipo: 'ENGENHEIRO', endereco: 'Rua B' },
+    { id: 3, nomeCompleto: 'John Winchester', username: 'John', senha: '123', telefone: '12994566666', tipo: 'OPERADOR', endereco: 'Rua C' },
   ])
 
   const [testes, setTestes] = useState<Teste[]>([
@@ -62,6 +87,7 @@ export default function MeuRouter() {
     { id: 'T003', idAeronave: 'A002', tipo: 'AERODINAMICO', resultado: 'REPROVADO' },
   ])
 
+  // ================= IDS =================
   function proximoIdFuncionario() {
     if (funcionarios.length === 0) return 1
     return Math.max(...funcionarios.map(f => f.id)) + 1
@@ -93,24 +119,44 @@ export default function MeuRouter() {
 
   const idsAeronaves = aeronaves.map(a => a.id)
 
+  // ================= RENDER =================
   return (
     <>
       <Cabess />
+
       <Routes>
 
         <Route path="/" element={
-          <Aeronaves 
+          <Aeronaves
             aeronaves={aeronaves}
             onSalvar={(a) => setAeronaves(prev => [...prev, a])}
+            onDeletar={(id) => setAeronaves(prev => prev.filter(a => a.id !== id))}
+            onAtualizarAeronave={(aAtualizada) =>
+              setAeronaves(prev =>
+                prev.map(a => a.id === aAtualizada.id ? aAtualizada : a)
+              )
+            }
             proximoId={proximoIdAeronave()}
+            todasPecas={pecas}
+            todasEtapas={etapas}
+            todosTestes={testes}
           />
-        }/>
+        } />
 
         <Route path="/aeronaves" element={
           <Aeronaves
             aeronaves={aeronaves}
             onSalvar={(a) => setAeronaves(prev => [...prev, a])}
+            onDeletar={(id) => setAeronaves(prev => prev.filter(a => a.id !== id))}
+            onAtualizarAeronave={(aAtualizada) =>
+              setAeronaves(prev =>
+                prev.map(a => a.id === aAtualizada.id ? aAtualizada : a)
+              )
+            }
             proximoId={proximoIdAeronave()}
+            todasPecas={pecas}
+            todasEtapas={etapas}
+            todosTestes={testes}
           />
         } />
 
@@ -119,19 +165,25 @@ export default function MeuRouter() {
             etapas={etapas}
             idsAeronaves={idsAeronaves}
             funcionarios={funcionarios}
-            onSalvar={(e) => setEtapas(prev => [...prev, { ...e, id: proximoIdEtapa() } ] ) }
-            onDeletar={ (id) => setEtapas(prev => prev.filter(e => e.id !== id) ) }
-            onAtualizarStatus={ (id, status) => setEtapas( prev => prev.map(e => e.id === id ? { ...e, status } : e) ) }
-            onAtualizarFuncionarios={(id, funcs) => setEtapas(prev => prev.map(e => e.id === id ? { ...e, funcionarios: funcs } : e))}
+            onSalvar={(e) => setEtapas(prev => [...prev, { ...e, id: proximoIdEtapa() }])}
+            onDeletar={(id) => setEtapas(prev => prev.filter(e => e.id !== id))}
+            onAtualizarStatus={(id, status) =>
+              setEtapas(prev => prev.map(e => e.id === id ? { ...e, status } : e))
+            }
+            onAtualizarFuncionarios={(id, funcs) =>
+              setEtapas(prev => prev.map(e => e.id === id ? { ...e, funcionarios: funcs } : e))
+            }
           />
         } />
 
         <Route path="/pecas" element={
           <Pecas
             pecas={pecas}
-            onSalvar={ (p) => setPecas( prev => [...prev, { ...p, id: proximoIdPeca() } ] ) }
-            onDeletar={ (id) => setPecas( prev => prev.filter(p => p.id !== id) ) }
-            onEditar={(pAtualizada) => setPecas(prev => prev.map(p => p.id === pAtualizada.id ? pAtualizada : p ) ) }
+            onSalvar={(p) => setPecas(prev => [...prev, { ...p, id: proximoIdPeca() }])}
+            onDeletar={(id) => setPecas(prev => prev.filter(p => p.id !== id))}
+            onEditar={(pAtualizada) =>
+              setPecas(prev => prev.map(p => p.id === pAtualizada.id ? pAtualizada : p))
+            }
           />
         } />
 
@@ -140,19 +192,24 @@ export default function MeuRouter() {
             funcionarios={funcionarios}
             onSalvar={(f) => setFuncionarios(prev => [...prev, { ...f, id: proximoIdFuncionario() }])}
             onDeletar={(id) => setFuncionarios(prev => prev.filter(f => f.id !== id))}
-            onEditar={(fAtualizado) => setFuncionarios(prev => prev.map(f => f.id === fAtualizado.id ? fAtualizado : f))}
+            onEditar={(fAtualizado) =>
+              setFuncionarios(prev => prev.map(f => f.id === fAtualizado.id ? fAtualizado : f))
+            }
           />
         } />
-        
+
         <Route path="/testes" element={
           <Testes
             testes={testes}
             idsAeronaves={idsAeronaves}
             onSalvar={(t) => setTestes(prev => [...prev, { ...t, id: proximoIdTeste() }])}
             onDeletar={(id) => setTestes(prev => prev.filter(t => t.id !== id))}
-            onEditar={(tAtualizado) => setTestes(prev => prev.map(t => t.id === tAtualizado.id ? tAtualizado : t))}
+            onEditar={(tAtualizado) =>
+              setTestes(prev => prev.map(t => t.id === tAtualizado.id ? tAtualizado : t))
+            }
           />
         } />
+
       </Routes>
     </>
   )
