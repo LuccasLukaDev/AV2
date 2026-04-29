@@ -56,10 +56,10 @@ npm run dev
 
 ## 👨‍💻 Usuário Admin
 
-Usuario admin já vem cadastrado para primeiro acesso:
+Usuário admin já vem cadastrado para primeiro acesso:
 
-Login: dean
-Senha: 123
+- **Login:** `dean`
+- **Senha:** `123`
 
 ---
 ## 📦 Entidades
