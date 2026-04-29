@@ -106,4 +106,4 @@ npm run build
 
 ## 📄 Licença
 
-Este projeto foi desenvolvido como parte de uma atividade acadêmica — AV1 · 2026.
+Este projeto foi desenvolvido como parte de uma atividade acadêmica — AV2 · 2026.
