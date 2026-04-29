@@ -28,9 +28,6 @@ npm install
 
 # Rodar em desenvolvimento
 npm run dev
-
-# Build para produção
-npm run build
 ```
 
 ---
@@ -56,6 +53,16 @@ npm run build
 | **OPERADOR** | Apenas Peças |
 
 ---
+
+---
+
+## 👨‍💻 Usuário Admin
+
+Usuario admin já vem cadastrado para primeiro acesso:
+
+Login: dean
+Senha: 123
+
 
 ## 📦 Entidades
 
