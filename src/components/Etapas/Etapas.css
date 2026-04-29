@@ -155,7 +155,7 @@
 }
 
 .detalhe-btn-voltar,
-.detalhe-btn-lixeira,
+.detalhe-btn-lixeira-head,
 .detalhe-btn-func-add {
   background: rgba(255, 255, 255, 0.05);
   border: 1.5px solid rgba(255, 255, 255, 0.15);
@@ -280,7 +280,7 @@
 
 .etapa-func-header {
   display: grid;
-  grid-template-columns: 1fr 1fr 48px;
+  grid-template-columns: 1fr 1fr auto;
   background: rgba(255, 255, 255, 0.06);
   border-radius: 10px;
   padding: 10px 20px;
@@ -346,6 +346,7 @@
 }
 
 @media (max-width: 768px) {
+
   .etapas-header { display: none; }
 
   .etapas-row {
@@ -365,9 +366,14 @@
     letter-spacing: 1px;
   }
 
+  .etapa-func-row{
+    font-size: 15px;
+  }
+
   .etapas-row span:nth-child(1)::before { content: 'ID'; }
-  .etapas-row span:nth-child(2)::before { content: 'Prazo'; }
-  .etapas-row span:nth-child(3)::before { content: 'Status'; }
+  .etapas-row span:nth-child(2)::before { content: 'Nome'; }
+  .etapas-row span:nth-child(3)::before { content: 'Prazo'; }
+  .etapas-row span:nth-child(4)::before { content: 'Status'; }
 
   .etapas-footer {
     flex-direction: row;
@@ -383,7 +389,41 @@
     flex: 1;
   }
 
-  .detalhe-titulo { font-size: 20px; }
+  .detalhe-topbar {
+    flex-direction: column !important;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .detalhe-topbar-esquerda,
+  .detalhe-topbar-direita {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .detalhe-btn-lixeira-head,
+  .detalhe-btn-status {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+  }
+
+  .detalhe-btn-confirmar-sim,
+  .detalhe-btn-confirmar-nao {
+    padding: 4px 14px;
+    font-size: 14px;
+  }
+
+  .detalhe-titulo {
+    font-size: 18px;
+    text-align: center;
+  }
+
   .detalhe-card { padding: 16px; }
-  .etapa-info-bar { flex-direction: column; gap: 8px; }
+
+  .etapa-info-bar {
+    flex-direction: column;
+    gap: 8px;
+  }
 }

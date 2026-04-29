@@ -370,4 +370,8 @@
   .detalhe-grid-2 { grid-template-columns: 1fr; }
   .detalhe-titulo { font-size: 22px; }
   .detalhe-card { padding: 20px; }
+
+  .detalhe-topbar{
+    flex-direction: row;
+  }
 }

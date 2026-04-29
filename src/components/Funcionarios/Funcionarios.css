@@ -455,5 +455,9 @@
   .detalhe-card {
     padding: 20px;
   }
+
+  .senha-cell {
+    justify-content: left;
+  }
 }
 

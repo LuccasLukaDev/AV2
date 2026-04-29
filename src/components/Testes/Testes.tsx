@@ -9,12 +9,13 @@ interface Teste {
 interface Props {
   testes: Teste[]
   idsAeronaves: string[]
+  onLogout: () => void
   onSalvar: (t: Teste) => void
   onDeletar: (id: string) => void
   onEditar: (t: Teste) => void
 }
 
-function Testes({ testes, idsAeronaves, onSalvar, onDeletar, onEditar }: Props) {
+function Testes({ testes, idsAeronaves, onSalvar, onDeletar, onEditar, onLogout }: Props) {
   const [modalAberto, setModalAberto] = useState(false)
   const [selecionado, setSelecionado] = useState<Teste | null>(null)
   const [confirmandoDeletar, setConfirmandoDeletar] = useState(false)
@@ -137,7 +138,7 @@ function Testes({ testes, idsAeronaves, onSalvar, onDeletar, onEditar }: Props) 
             ADICIONAR TESTES +
           </button>
 
-          <button className='testes-btn-sair'>→]</button>
+          <button className='testes-btn-sair' onClick={onLogout}>→]</button>
         </div>
       </div>
 

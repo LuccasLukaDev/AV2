@@ -39,6 +39,7 @@ interface Aeronave {
 
 interface Props {
   aeronaves: Aeronave[]
+  onLogout: () => void
   onSalvar: (a: Aeronave) => void
   onDeletar: (id: string) => void
   proximoId: string
@@ -50,6 +51,7 @@ interface Props {
 
 function Aeronaves({
   aeronaves,
+  onLogout,
   onSalvar,
   onDeletar,
   proximoId,
@@ -120,15 +122,20 @@ function Aeronaves({
   }
 
   // ================= ADICIONAR =================
+  
   function handleAdicionarPeca() {
     if (!selecionado) return
 
     const peca = todasPecas.find(p => p.id.toUpperCase() === inputId.toUpperCase())
     if (!peca) return setErroInput('Peça não encontrada.')
 
-    if (selecionado.pecas.some(p => p.id === peca.id)) {
+    const jaEmOutra = aeronaves.some(a =>
+      a.id !== selecionado.id && a.pecas.some(p => p.id === peca.id)
+    )
+    if (jaEmOutra) return setErroInput('Peça já associada a outra aeronave.')
+
+    if (selecionado.pecas.some(p => p.id === peca.id))
       return setErroInput('Peça já adicionada.')
-    }
 
     const atualizado: Aeronave = {
       ...selecionado,
@@ -146,13 +153,15 @@ function Aeronaves({
     const etapa = todasEtapas.find(e => e.id.toUpperCase() === inputId.toUpperCase())
     if (!etapa) return setErroInput('Etapa não encontrada.')
 
-    if (selecionado.etapas.some(e => e.id === etapa.id)) {
+    const jaEmOutra = todasEtapas.find(e => e.id === etapa.id)?.idAeronave
+    if (jaEmOutra && jaEmOutra !== selecionado.id)
+      return setErroInput('Etapa já associada a outra aeronave.')
+
+    if (selecionado.etapas.some(e => e.id === etapa.id))
       return setErroInput('Etapa já adicionada.')
-    }
 
     etapa.idAeronave = selecionado.id
     syncAeronave(selecionado.id)
-
     fecharModal()
   }
 
@@ -162,13 +171,15 @@ function Aeronaves({
     const teste = todosTestes.find(t => t.id.toUpperCase() === inputId.toUpperCase())
     if (!teste) return setErroInput('Teste não encontrado.')
 
-    if (selecionado.testes.some(t => t.id === teste.id)) {
+    const jaEmOutra = todosTestes.find(t => t.id === teste.id)?.idAeronave
+    if (jaEmOutra && jaEmOutra !== selecionado.id)
+      return setErroInput('Teste já associado a outra aeronave.')
+
+    if (selecionado.testes.some(t => t.id === teste.id))
       return setErroInput('Teste já adicionado.')
-    }
 
     teste.idAeronave = selecionado.id
     syncAeronave(selecionado.id)
-
     fecharModal()
   }
 
@@ -422,7 +433,7 @@ function Aeronaves({
           <button className='aeronaves-btn-adicionar' onClick={() => setModalAberto(true)}>
             ADICIONAR AERONAVE +
           </button>
-          <button className='aeronaves-btn-sair'>→]</button>
+          <button className='aeronaves-btn-sair' onClick={onLogout}>→]</button>
         </div>
       </div>
 

@@ -498,4 +498,12 @@
     font-size: 13px;
     padding: 8px 14px;
   }
+
+  .detalhe-topbar{
+    flex-direction: row !important;
+  }
+
+  .detalhe-topbar-esquerda{
+    flex-wrap: nowrap !important;
+  }
 }

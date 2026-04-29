@@ -25,6 +25,7 @@ interface Props {
   etapas: Etapa[]
   idsAeronaves: string[]
   funcionarios: Funcionario[]
+  onLogout: () => void
   onSalvar: (e: Etapa) => void
   onDeletar: (id: string) => void
   onAtualizarStatus: (id: string, status: string) => void
@@ -35,6 +36,7 @@ function Etapas({
   etapas,
   idsAeronaves,
   funcionarios,
+  onLogout,
   onSalvar,
   onDeletar,
   onAtualizarStatus,
@@ -71,36 +73,47 @@ function Etapas({
   function handleStatus(novoStatus: string) {
     if (!selecionado) return
 
-    const etapasDaAeronave = etapas
-      .filter(e => e.idAeronave === selecionado.idAeronave)
-      .sort((a, b) => a.id.localeCompare(b.id))
+    const statusAtual = selecionado.status
 
-    const indexAtual = etapasDaAeronave.findIndex(e => e.id === selecionado.id)
-    const anterior = etapasDaAeronave[indexAtual - 1]
-
-    // ❌ não pode voltar pra pendente
     if (novoStatus === 'PENDENTE') {
-      setErroFunc('Não é permitido voltar para PENDENTE.')
+      setErroFunc('Não é possível voltar para PENDENTE.')
       return
     }
 
-    // ❌ não pode iniciar fora de ordem
-    if (novoStatus === 'ANDAMENTO') {
-      if (selecionado.status !== 'PENDENTE') {
-        setErroFunc('Só é possível iniciar se estiver PENDENTE.')
-        return
-      }
-
-      if (anterior && anterior.status !== 'CONCLUIDA') {
-        setErroFunc('Finalize a etapa anterior primeiro.')
-        return
-      }
+  if (novoStatus === 'ANDAMENTO') {
+    if (statusAtual !== 'PENDENTE') {
+      setErroFunc('A etapa precisa estar PENDENTE para iniciar.')
+      return
     }
 
-    // ❌ não pode concluir errado
+    const idAtual = parseInt(selecionado.id.replace('E', ''))
+
+    const temAnteriorPendente = etapas.some(e => {
+      const idE = parseInt(e.id.replace('E', ''))
+      return idE < idAtual && e.status === 'PENDENTE'
+    })
+
+    if (temAnteriorPendente) {
+      setErroFunc('Existe uma etapa anterior ainda pendente.')
+      return
+    }
+  }
+
     if (novoStatus === 'CONCLUIDA') {
-      if (selecionado.status !== 'ANDAMENTO') {
-        setErroFunc('A etapa precisa estar EM ANDAMENTO.')
+      if (statusAtual !== 'ANDAMENTO') {
+        setErroFunc('A etapa precisa estar EM ANDAMENTO para ser concluída.')
+        return
+      }
+
+      const idAtual = parseInt(selecionado.id.replace('E', ''))
+
+      const temAnteriorEmAndamento = etapas.some(e => {
+        const idE = parseInt(e.id.replace('E', ''))
+        return idE < idAtual && e.status === 'ANDAMENTO'
+      })
+
+      if (temAnteriorEmAndamento) {
+        setErroFunc('Existe uma etapa anterior ainda em andamento.')
         return
       }
     }
@@ -170,7 +183,7 @@ function Etapas({
                   <button className='detalhe-btn-status pendente' onClick={() => handleStatus('PENDENTE')}>⚠</button>
                   <button className='detalhe-btn-status andamento' onClick={() => handleStatus('ANDAMENTO')}>🔄</button>
                   <button className='detalhe-btn-status concluida' onClick={() => handleStatus('CONCLUIDA')}>✅</button>
-                  <button className='detalhe-btn-lixeira' onClick={() => setConfirmandoDeletar(true)}>🗑</button>
+                  <button className='detalhe-btn-lixeira-head' onClick={() => setConfirmandoDeletar(true)}>🗑</button>
                 </>
               )}
             </div>
@@ -287,7 +300,7 @@ function Etapas({
           <button className='etapas-btn-adicionar' onClick={() => setModalAberto(true)}>
             ADICIONAR ETAPA +
           </button>
-          <button className='etapas-btn-sair'>→]</button>
+          <button className='etapas-btn-sair' onClick={onLogout}>→]</button>
         </div>
       </div>
 

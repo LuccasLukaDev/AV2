@@ -9,12 +9,13 @@ interface Funcionario {
 
 interface Props {
   funcionarios: Funcionario[]
+  onLogout: () => void
   onSalvar: (f: Funcionario) => void
   onDeletar: (id: number) => void
   onEditar: (f: Funcionario) => void
 }
 
-function Funcionarios({ funcionarios, onSalvar, onDeletar, onEditar }: Props) {
+function Funcionarios({ funcionarios, onSalvar, onDeletar, onEditar, onLogout }: Props) {
   const [modalAberto, setModalAberto] = useState(false)
   const [senhasVisiveis, setSenhasVisiveis] = useState<Record<number, boolean>>({})
   const [selecionado, setSelecionado] = useState<Funcionario | null>(null)
@@ -238,7 +239,7 @@ function Funcionarios({ funcionarios, onSalvar, onDeletar, onEditar }: Props) {
           <button className='btn-adicionar' onClick={() => setModalAberto(true)}>
             ADICIONAR FUNCIONARIO +
           </button>
-          <button className='btn-sair'>→]</button>
+          <button className='btn-sair' onClick={onLogout}>→]</button>
         </div>
       </div>
 

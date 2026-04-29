@@ -12,6 +12,7 @@ interface Peca {
 
 interface Props {
   pecas: Peca[]
+  onLogout: () => void
   onSalvar: (p: Omit<Peca, 'id'>) => void
   onDeletar: (id: string) => void
   onEditar: (p: Peca) => void
@@ -23,7 +24,7 @@ const statusColor: Record<string, string> = {
   PRONTA: 'status-pronta',
 }
 
-function Pecas({ pecas, onSalvar, onDeletar, onEditar }: Props) {
+function Pecas({ pecas, onSalvar, onDeletar, onEditar, onLogout}: Props) {
   const [modalAberto, setModalAberto] = useState(false)
   const [selecionado, setSelecionado] = useState<Peca | null>(null)
   const [confirmandoDeletar, setConfirmandoDeletar] = useState(false)
@@ -170,7 +171,7 @@ function Pecas({ pecas, onSalvar, onDeletar, onEditar }: Props) {
           <button className='pecas-btn-adicionar' onClick={() => setModalAberto(true)}>
             ADICIONAR PEÇA +
           </button>
-          <button className='pecas-btn-sair'>→]</button>
+          <button className='pecas-btn-sair' onClick={onLogout}>→]</button>
         </div>
       </div>
 

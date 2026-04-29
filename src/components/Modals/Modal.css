@@ -219,3 +219,299 @@
 .modal-input-sufixo-wrapper.input-erro {
   border-color: rgba(255, 100, 100, 0.7) !important;
 }
+
+
+/* ===== MODAL FUNCIONARIO (ISOLADO) ===== */
+
+.modal-func-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-func-box {
+  background: linear-gradient(160deg, #2a2a3e 0%, #1e1e30 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 32px;
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: 'Rajdhani', sans-serif;
+
+  /* scrollbar custom */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99, 179, 237, 0.4) transparent;
+}
+
+/* Chrome scrollbar */
+.modal-func-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-func-box::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-func-box::-webkit-scrollbar-thumb {
+  background: rgba(99, 179, 237, 0.35);
+  border-radius: 10px;
+  border: 1px solid rgba(99, 179, 237, 0.2);
+}
+
+.modal-func-box::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 179, 237, 0.6);
+}
+
+/* ===== HEADER ===== */
+
+.modal-func-titulo {
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.modal-func-btn-fechar {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.modal-func-btn-fechar:hover {
+  color: rgba(255, 100, 100, 0.9);
+}
+
+.modal-func-box {
+  position: relative;
+}
+
+/* ===== GRID ===== */
+
+.modal-func-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.modal-func-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-func-campo label {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* ===== INPUTS ===== */
+
+.modal-func-campo input,
+.modal-func-campo select {
+  width: 100%;
+  min-width: 0;
+
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+  padding: 14px 20px;
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #f0f0f0;
+
+  outline: none;
+  transition: border-color 0.2s;
+
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+}
+
+.modal-func-campo input:focus,
+.modal-func-campo select:focus {
+  border-color: rgba(99, 179, 237, 0.6);
+}
+
+.modal-func-campo input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== SELECT ===== */
+
+.modal-func-select-wrapper {
+  position: relative;
+}
+
+.modal-func-select-wrapper::after {
+  content: '▼';
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+}
+
+/* ===== INPUT COM OLHO (SENHA) ===== */
+
+.modal-func-input-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+  overflow: hidden;
+
+  box-sizing: border-box;
+}
+
+.modal-func-input-wrapper:focus-within {
+  border-color: rgba(99, 179, 237, 0.6);
+}
+
+.modal-func-input-wrapper input {
+  flex: 1;
+  min-width: 0;
+
+  background: transparent;
+  border: none !important;
+  padding: 14px 20px;
+}
+
+.modal-func-input-wrapper input:focus {
+  outline: none;
+}
+
+.modal-func-btn-olho {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 14px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.modal-func-btn-olho:hover {
+  opacity: 1;
+}
+
+/* ===== ERRO ===== */
+
+.modal-func-erro {
+  color: rgba(255, 100, 100, 0.9);
+  font-size: 14px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.modal-func-input-erro {
+  border-color: rgba(255, 100, 100, 0.7) !important;
+}
+
+/* ===== FOOTER ===== */
+
+.modal-func-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.modal-func-btn-salvar {
+  background: rgba(99, 179, 237, 0.15);
+  border: 1.5px solid rgba(99, 179, 237, 0.5);
+  border-radius: 50px;
+  padding: 14px 64px;
+
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 2px;
+
+  cursor: pointer;
+  color: rgba(99, 179, 237, 0.9);
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.modal-func-btn-salvar:hover {
+  background: rgba(99, 179, 237, 0.25);
+  border-color: rgba(99, 179, 237, 0.9);
+  color: #fff;
+}
+
+/* FIX DROPDOWN (FUNCIONARIO) */
+
+.modal-func-select-wrapper select {
+  width: 100%;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.05);
+  color: #f0f0f0;
+}
+
+.modal-func-select-wrapper select option {
+  background: #1e1e30;
+  color: #f0f0f0;
+}
+
+/* melhora no Chrome/Edge */
+.modal-func-select-wrapper select:focus {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f0f0f0;
+}
+
+/* remove fundo branco no Safari/iOS */
+.modal-func-select-wrapper select {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* remove fundo branco ao abrir (alguns browsers) */
+.modal-func-select-wrapper select::-ms-expand {
+  display: none;
+}
+
+/* ===== RESPONSIVO ===== */
+
+@media (max-width: 768px) {
+  .modal-func-box {
+    margin: 12px;
+    padding: 20px;
+    max-height: 95vh;
+  }
+
+  .modal-func-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-func-btn-salvar {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+  }
+}

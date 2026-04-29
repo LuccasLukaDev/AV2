@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 
 import Cabess from "../Cabess/Cabess";
@@ -7,6 +7,7 @@ import Etapas from "../Etapas/Etapas";
 import Pecas from "../Pecas/Pecas";
 import Testes from "../Testes/Testes";
 import Aeronaves from "../Aeronaves/Aeronaves";
+import Login from "../Login/login";
 
 // ================= TIPOS =================
 type Funcionario = {
@@ -54,8 +55,9 @@ type Aeronave = {
   testes: Teste[]
 }
 
-// ================= COMPONENT =================
 export default function MeuRouter() {
+
+  const [usuarioLogado, setUsuarioLogado] = useState<Funcionario | null>(null)
 
   const [aeronaves, setAeronaves] = useState<Aeronave[]>([
     { id: 'A001', modelo: 'MODELO 1', tipo: 'MILITAR', capacidade: '1000 KG', alcance: '1500 M', etapas: [], pecas: [], testes: [] },
@@ -66,7 +68,7 @@ export default function MeuRouter() {
   const [etapas, setEtapas] = useState<Etapa[]>([
     { id: 'E001', nome: 'ETAPA 1', prazo: '20 / 11 / 2026', status: 'PENDENTE', idAeronave: 'A001', funcionarios: [] },
     { id: 'E002', nome: 'ETAPA 2', prazo: '20 / 11 / 2026', status: 'PENDENTE', idAeronave: 'A001', funcionarios: [] },
-    { id: 'E003', nome: 'ETAPA 3', prazo: '20 / 11 / 2026', status: 'PENDENTE', idAeronave: 'A002', funcionarios: [] },
+    { id: 'E003', nome: 'ETAPA 3', prazo: '20 / 11 / 2026', status: 'PENDENTE', idAeronave: 'A001', funcionarios: [] },
   ])
 
   const [pecas, setPecas] = useState<Peca[]>([
@@ -76,9 +78,9 @@ export default function MeuRouter() {
   ])
 
   const [funcionarios, setFuncionarios] = useState<Funcionario[]>([
-    { id: 1, nomeCompleto: 'Dean Winchester', username: 'Dean', senha: '123', telefone: '12994568473', tipo: 'ADM', endereco: 'Rua A' },
-    { id: 2, nomeCompleto: 'Sam Winchester',  username: 'Sam',  senha: '123', telefone: '12998568473', tipo: 'ENGENHEIRO', endereco: 'Rua B' },
-    { id: 3, nomeCompleto: 'John Winchester', username: 'John', senha: '123', telefone: '12994566666', tipo: 'OPERADOR', endereco: 'Rua C' },
+    { id: 1, nomeCompleto: 'Dean Winchester', username: 'dean', senha: '123', telefone: '12994568473', tipo: 'ADM', endereco: 'Rua A' },
+    { id: 2, nomeCompleto: 'Sam Winchester',  username: 'sam',  senha: '123', telefone: '12998568473', tipo: 'ENGENHEIRO', endereco: 'Rua B' },
+    { id: 3, nomeCompleto: 'John Winchester', username: 'john', senha: '123', telefone: '12994566666', tipo: 'OPERADOR', endereco: 'Rua C' },
   ])
 
   const [testes, setTestes] = useState<Teste[]>([
@@ -87,7 +89,6 @@ export default function MeuRouter() {
     { id: 'T003', idAeronave: 'A002', tipo: 'AERODINAMICO', resultado: 'REPROVADO' },
   ])
 
-  // ================= IDS =================
   function proximoIdFuncionario() {
     if (funcionarios.length === 0) return 1
     return Math.max(...funcionarios.map(f => f.id)) + 1
@@ -119,95 +120,150 @@ export default function MeuRouter() {
 
   const idsAeronaves = aeronaves.map(a => a.id)
 
-  // ================= RENDER =================
+  function logout() {
+    setUsuarioLogado(null)
+  }
+
+  function temPermissao(pagina: string) {
+    if (!usuarioLogado) return false
+
+    if (usuarioLogado.tipo === 'ADM') return true
+    if (usuarioLogado.tipo === 'ENGENHEIRO')
+      return ['pecas', 'etapas', 'testes'].includes(pagina)
+    if (usuarioLogado.tipo === 'OPERADOR')
+      return ['pecas'].includes(pagina)
+
+    return false
+  }
+
+  function SemPermissao() {
+    return (
+      <main>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flex: 1,
+          gap: '16px',
+          fontFamily: "'Rajdhani', sans-serif",
+        }}>
+          <span style={{ fontSize: '48px' }}>🚫</span>
+          <h2 style={{
+            color: 'rgba(255, 100, 100, 0.9)',
+            fontSize: '28px',
+            fontWeight: 700,
+            letterSpacing: '2px',
+            margin: 0,
+          }}>ACESSO NEGADO</h2>
+          <p style={{
+            color: 'rgba(255, 255, 255, 0.4)',
+            fontSize: '18px',
+            margin: 0,
+          }}>Você não tem permissão para acessar esta página.</p>
+        </div>
+      </main>
+    )
+  }
+
+  // ================= LOGIN =================
+  if (!usuarioLogado) {
+    return (
+      <Login
+        onLogin={(user) => setUsuarioLogado(user)}
+        usuarios={funcionarios}
+      />
+    )
+  }
+
   return (
     <>
       <Cabess />
 
       <Routes>
 
-        <Route path="/" element={
-          <Aeronaves
-            aeronaves={aeronaves}
-            onSalvar={(a) => setAeronaves(prev => [...prev, a])}
-            onDeletar={(id) => setAeronaves(prev => prev.filter(a => a.id !== id))}
-            onAtualizarAeronave={(aAtualizada) =>
-              setAeronaves(prev =>
-                prev.map(a => a.id === aAtualizada.id ? aAtualizada : a)
-              )
-            }
-            proximoId={proximoIdAeronave()}
-            todasPecas={pecas}
-            todasEtapas={etapas}
-            todosTestes={testes}
-          />
-        } />
+        <Route path="/" element={<Navigate to="/pecas" />} />
 
         <Route path="/aeronaves" element={
-          <Aeronaves
-            aeronaves={aeronaves}
-            onSalvar={(a) => setAeronaves(prev => [...prev, a])}
-            onDeletar={(id) => setAeronaves(prev => prev.filter(a => a.id !== id))}
-            onAtualizarAeronave={(aAtualizada) =>
-              setAeronaves(prev =>
-                prev.map(a => a.id === aAtualizada.id ? aAtualizada : a)
-              )
-            }
-            proximoId={proximoIdAeronave()}
-            todasPecas={pecas}
-            todasEtapas={etapas}
-            todosTestes={testes}
-          />
+          temPermissao('aeronaves') ? (
+            <Aeronaves
+              aeronaves={aeronaves}
+              onLogout={logout}
+              onSalvar={(a) => setAeronaves(prev => [...prev, a])}
+              onDeletar={(id) => setAeronaves(prev => prev.filter(a => a.id !== id))}
+              onAtualizarAeronave={(aAtualizada) =>
+                setAeronaves(prev =>
+                  prev.map(a => a.id === aAtualizada.id ? aAtualizada : a)
+                )
+              }
+              proximoId={proximoIdAeronave()}
+              todasPecas={pecas}
+              todasEtapas={etapas}
+              todosTestes={testes}
+            />
+          ) : <SemPermissao />
         } />
 
         <Route path="/etapas" element={
-          <Etapas
-            etapas={etapas}
-            idsAeronaves={idsAeronaves}
-            funcionarios={funcionarios}
-            onSalvar={(e) => setEtapas(prev => [...prev, { ...e, id: proximoIdEtapa() }])}
-            onDeletar={(id) => setEtapas(prev => prev.filter(e => e.id !== id))}
-            onAtualizarStatus={(id, status) =>
-              setEtapas(prev => prev.map(e => e.id === id ? { ...e, status } : e))
-            }
-            onAtualizarFuncionarios={(id, funcs) =>
-              setEtapas(prev => prev.map(e => e.id === id ? { ...e, funcionarios: funcs } : e))
-            }
-          />
+          temPermissao('etapas') ? (
+            <Etapas
+              etapas={etapas}
+              idsAeronaves={idsAeronaves}
+              funcionarios={funcionarios}
+              onLogout={logout}
+              onSalvar={(e) => setEtapas(prev => [...prev, { ...e, id: proximoIdEtapa() }])}
+              onDeletar={(id) => setEtapas(prev => prev.filter(e => e.id !== id))}
+              onAtualizarStatus={(id, status) =>
+                setEtapas(prev => prev.map(e => e.id === id ? { ...e, status } : e))
+              }
+              onAtualizarFuncionarios={(id, funcs) =>
+                setEtapas(prev => prev.map(e => e.id === id ? { ...e, funcionarios: funcs } : e))
+              }
+            />
+          ) : <SemPermissao />
         } />
 
         <Route path="/pecas" element={
-          <Pecas
-            pecas={pecas}
-            onSalvar={(p) => setPecas(prev => [...prev, { ...p, id: proximoIdPeca() }])}
-            onDeletar={(id) => setPecas(prev => prev.filter(p => p.id !== id))}
-            onEditar={(pAtualizada) =>
-              setPecas(prev => prev.map(p => p.id === pAtualizada.id ? pAtualizada : p))
-            }
-          />
+          temPermissao('pecas') ? (
+            <Pecas
+              pecas={pecas}
+              onLogout={logout}
+              onSalvar={(p) => setPecas(prev => [...prev, { ...p, id: proximoIdPeca() }])}
+              onDeletar={(id) => setPecas(prev => prev.filter(p => p.id !== id))}
+              onEditar={(pAtualizada) =>
+                setPecas(prev => prev.map(p => p.id === pAtualizada.id ? pAtualizada : p))
+              }
+            />
+          ) : <SemPermissao />
         } />
 
         <Route path="/funcionarios" element={
-          <Funcionarios
-            funcionarios={funcionarios}
-            onSalvar={(f) => setFuncionarios(prev => [...prev, { ...f, id: proximoIdFuncionario() }])}
-            onDeletar={(id) => setFuncionarios(prev => prev.filter(f => f.id !== id))}
-            onEditar={(fAtualizado) =>
-              setFuncionarios(prev => prev.map(f => f.id === fAtualizado.id ? fAtualizado : f))
-            }
-          />
+          temPermissao('funcionarios') ? (
+            <Funcionarios
+              funcionarios={funcionarios}
+              onLogout={logout}
+              onSalvar={(f) => setFuncionarios(prev => [...prev, { ...f, id: proximoIdFuncionario() }])}
+              onDeletar={(id) => setFuncionarios(prev => prev.filter(f => f.id !== id))}
+              onEditar={(fAtualizado) =>
+                setFuncionarios(prev => prev.map(f => f.id === fAtualizado.id ? fAtualizado : f))
+              }
+            />
+          ) : <SemPermissao />
         } />
 
         <Route path="/testes" element={
-          <Testes
-            testes={testes}
-            idsAeronaves={idsAeronaves}
-            onSalvar={(t) => setTestes(prev => [...prev, { ...t, id: proximoIdTeste() }])}
-            onDeletar={(id) => setTestes(prev => prev.filter(t => t.id !== id))}
-            onEditar={(tAtualizado) =>
-              setTestes(prev => prev.map(t => t.id === tAtualizado.id ? tAtualizado : t))
-            }
-          />
+          temPermissao('testes') ? (
+            <Testes
+              testes={testes}
+              idsAeronaves={idsAeronaves}
+              onLogout={logout}
+              onSalvar={(t) => setTestes(prev => [...prev, { ...t, id: proximoIdTeste() }])}
+              onDeletar={(id) => setTestes(prev => prev.filter(t => t.id !== id))}
+              onEditar={(tAtualizado) =>
+                setTestes(prev => prev.map(t => t.id === tAtualizado.id ? tAtualizado : t))
+              }
+            />
+          ) : <SemPermissao />
         } />
 
       </Routes>

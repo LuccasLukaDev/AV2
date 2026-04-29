@@ -48,13 +48,13 @@ function ModalAdicionarFuncionario({ onFechar, onSalvar, usernamesExistentes, pr
   }
 
   return (
-    <div className='modal-overlay' onClick={onFechar}>
-      <div className='modal-box modal-box-wide' onClick={e => e.stopPropagation()}>
-        <button className='modal-btn-fechar' onClick={onFechar}>✕</button>
-        <h2 className='modal-titulo'>Adicionar Funcionário</h2>
+    <div className='modal-func-overlay' onClick={onFechar}>
+      <div className='modal-func-box' onClick={e => e.stopPropagation()}>
+        <button className='modal-func-btn-fechar' onClick={onFechar}>✕</button>
+        <h2 className='modal-func-titulo'>Adicionar Funcionário</h2>
 
-        <div className='modal-grid-2'>
-          <div className='modal-campo'>
+        <div className='modal-func-grid'>
+          <div className='modal-func-campo'>
             <label>Nome Completo</label>
             <input
               type='text'
@@ -62,11 +62,11 @@ function ModalAdicionarFuncionario({ onFechar, onSalvar, usernamesExistentes, pr
               value={nomeCompleto}
               onChange={e => { setNomeCompleto(e.target.value); setErro('') }}
               maxLength={40}
-              className={erro && !nomeCompleto ? 'input-erro' : ''}
+              className={erro && !nomeCompleto ? 'modal-func-input-erro' : ''}
             />
           </div>
 
-          <div className='modal-campo'>
+          <div className='modal-func-campo'>
             <label>Nome de Usuário</label>
             <input
               type='text'
@@ -74,13 +74,13 @@ function ModalAdicionarFuncionario({ onFechar, onSalvar, usernamesExistentes, pr
               value={username}
               onChange={e => { setUsername(e.target.value); setErro('') }}
               maxLength={20}
-              className={erro && (!username || usernamesExistentes.includes(username.toLowerCase())) ? 'input-erro' : ''}
+              className={erro && (!username || usernamesExistentes.includes(username.toLowerCase())) ? 'modal-func-input-erro' : ''}
             />
           </div>
 
-          <div className='modal-campo'>
+          <div className='modal-func-campo'>
             <label>Tipo de Usuário</label>
-            <div className={`modal-select-wrapper ${erro && !tipo ? 'input-erro' : ''}`}>
+            <div className={`modal-func-select-wrapper ${erro && !tipo ? 'modal-func-input-erro' : ''}`}>
               <select value={tipo} onChange={e => { setTipo(e.target.value); setErro('') }}>
                 <option value='' disabled></option>
                 <option value='ADM'>ADM</option>
@@ -90,9 +90,9 @@ function ModalAdicionarFuncionario({ onFechar, onSalvar, usernamesExistentes, pr
             </div>
           </div>
 
-          <div className='modal-campo'>
+          <div className='modal-func-campo'>
             <label>Senha</label>
-            <div className={`modal-input-sufixo-wrapper ${erro && !senha ? 'input-erro' : ''}`}>
+            <div className={`modal-func-input-wrapper ${erro && !senha ? 'modal-func-input-erro' : ''}`}>
               <input
                 type={senhaVisivel ? 'text' : 'password'}
                 placeholder='••••••••'
@@ -101,7 +101,7 @@ function ModalAdicionarFuncionario({ onFechar, onSalvar, usernamesExistentes, pr
                 maxLength={30}
               />
               <button
-                className='btn-olho'
+                className='modal-func-btn-olho'
                 onClick={() => setSenhaVisivel(prev => !prev)}
               >
                 {senhaVisivel ? '🙈' : '👁'}
@@ -109,7 +109,7 @@ function ModalAdicionarFuncionario({ onFechar, onSalvar, usernamesExistentes, pr
             </div>
           </div>
 
-          <div className='modal-campo'>
+          <div className='modal-func-campo'>
             <label>Telefone</label>
             <input
               type='text'
@@ -117,11 +117,11 @@ function ModalAdicionarFuncionario({ onFechar, onSalvar, usernamesExistentes, pr
               value={telefone}
               onChange={e => { setTelefone(somenteNumeros(e.target.value)); setErro('') }}
               maxLength={11}
-              className={erro && !telefone ? 'input-erro' : ''}
+              className={erro && !telefone ? 'modal-func-input-erro' : ''}
             />
           </div>
 
-          <div className='modal-campo'>
+          <div className='modal-func-campo'>
             <label>Endereço</label>
             <input
               type='text'
@@ -129,15 +129,15 @@ function ModalAdicionarFuncionario({ onFechar, onSalvar, usernamesExistentes, pr
               value={endereco}
               onChange={e => { setEndereco(e.target.value); setErro('') }}
               maxLength={40}
-              className={erro && !endereco ? 'input-erro' : ''}
+              className={erro && !endereco ? 'modal-func-input-erro' : ''}
             />
           </div>
         </div>
 
-        {erro && <p className='modal-erro'>{erro}</p>}
+        {erro && <p className='modal-func-erro'>{erro}</p>}
 
-        <div className='modal-footer'>
-          <button className='modal-btn-salvar' onClick={handleSalvar}>Salvar 💾</button>
+        <div className='modal-func-footer'>
+          <button className='modal-func-btn-salvar' onClick={handleSalvar}>Salvar 💾</button>
         </div>
       </div>
     </div>
