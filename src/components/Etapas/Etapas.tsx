@@ -74,11 +74,6 @@ function Etapas({
 
     const statusAtual = selecionado.status
 
-    if (novoStatus === 'PENDENTE') {
-      setErroFunc('Não é possível voltar para PENDENTE.')
-      return
-    }
-
     if (novoStatus === 'ANDAMENTO') {
       if (statusAtual !== 'PENDENTE') {
         setErroFunc('A etapa precisa estar PENDENTE para iniciar.')
@@ -179,7 +174,6 @@ function Etapas({
                 </div>
               ) : (
                 <>
-                  <button className='detalhe-btn-status pendente' onClick={() => handleStatus('PENDENTE')}>⚠</button>
                   <button className='detalhe-btn-status andamento' onClick={() => handleStatus('ANDAMENTO')}>🔄</button>
                   <button className='detalhe-btn-status concluida' onClick={() => handleStatus('CONCLUIDA')}>✅</button>
                   <button className='detalhe-btn-lixeira-head' onClick={() => setConfirmandoDeletar(true)}>🗑</button>
