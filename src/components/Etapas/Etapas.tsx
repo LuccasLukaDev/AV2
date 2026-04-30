@@ -69,7 +69,6 @@ function Etapas({
     fecharDetalhe()
   }
 
-  // 🔥 REGRA DE NEGÓCIO (PDF)
   function handleStatus(novoStatus: string) {
     if (!selecionado) return
 
@@ -80,24 +79,24 @@ function Etapas({
       return
     }
 
-  if (novoStatus === 'ANDAMENTO') {
-    if (statusAtual !== 'PENDENTE') {
-      setErroFunc('A etapa precisa estar PENDENTE para iniciar.')
-      return
+    if (novoStatus === 'ANDAMENTO') {
+      if (statusAtual !== 'PENDENTE') {
+        setErroFunc('A etapa precisa estar PENDENTE para iniciar.')
+        return
+      }
+
+      const idAtual = parseInt(selecionado.id.replace('E', ''))
+
+      const temAnteriorPendente = etapas.some(e => {
+        const idE = parseInt(e.id.replace('E', ''))
+        return idE < idAtual && e.status === 'PENDENTE'
+      })
+
+      if (temAnteriorPendente) {
+        setErroFunc('Existe uma etapa anterior ainda pendente.')
+        return
+      }
     }
-
-    const idAtual = parseInt(selecionado.id.replace('E', ''))
-
-    const temAnteriorPendente = etapas.some(e => {
-      const idE = parseInt(e.id.replace('E', ''))
-      return idE < idAtual && e.status === 'PENDENTE'
-    })
-
-    if (temAnteriorPendente) {
-      setErroFunc('Existe uma etapa anterior ainda pendente.')
-      return
-    }
-  }
 
     if (novoStatus === 'CONCLUIDA') {
       if (statusAtual !== 'ANDAMENTO') {
