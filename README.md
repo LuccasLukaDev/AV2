@@ -26,6 +26,9 @@ AeroCode é uma aplicação desenvolvida em **React + TypeScript** para gerencia
 # Clone o Projeto
 git clone
 
+# Acesse o diretório do projeto
+cd AV2
+
 # Instalar dependências
 npm install
 
