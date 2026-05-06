@@ -84,14 +84,16 @@ function Etapas({
 
       const temAnteriorPendente = etapas.some(e => {
         const idE = parseInt(e.id.replace('E', ''))
-        return idE < idAtual && e.status === 'PENDENTE'
+        return idE < idAtual &&
+          e.status === 'PENDENTE' &&
+          e.idAeronave === selecionado.idAeronave
       })
 
       if (temAnteriorPendente) {
         setErroFunc('Existe uma etapa anterior ainda pendente.')
         return
       }
-    }
+    } 
 
     if (novoStatus === 'CONCLUIDA') {
       if (statusAtual !== 'ANDAMENTO') {
@@ -103,7 +105,9 @@ function Etapas({
 
       const temAnteriorEmAndamento = etapas.some(e => {
         const idE = parseInt(e.id.replace('E', ''))
-        return idE < idAtual && e.status === 'ANDAMENTO'
+        return idE < idAtual &&
+          e.status === 'ANDAMENTO' &&
+          e.idAeronave === selecionado.idAeronave
       })
 
       if (temAnteriorEmAndamento) {
